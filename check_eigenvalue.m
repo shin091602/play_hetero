@@ -40,10 +40,10 @@ iteration_max = 100;
 threshold     = 1e-10;
 delta         = 2e-5;
 count         = 0;
-count_max     = 4000;
-plot_interval = 200;
+count_max     = 8000;
+plot_interval = 100;
 
-Jacobi_min = 3.1;
+Jacobi_min = 3.0;
 Jacobi_max = 3.1723;
 
 color      = jet;
@@ -125,7 +125,7 @@ hold off
 
 %% check the eigenvalue
 video = VideoWriter('video/lyapunov_eigenvalue_1.mp4', 'MPEG-4');
-video.FrameRate = 3;
+video.FrameRate = 5;
 open(video);
 for i = 1:count_max/plot_interval
     X0 = [x0_corrected(i,:),reshape(eye(6),1,[])];
@@ -149,7 +149,7 @@ for i = 1:count_max/plot_interval
     grid on
     xlim([-1.5 1.5]);
     ylim([-1.5 1.5]);
-    text(0.1, 0.9, ['jacobi constant: ' num2str(Jacobi(i))], 'Units', 'normalized','FontSize', 20, 'FontWeight', 'bold', 'Color', 'red');
+    text(0.1, 0.9, ['jacobi constant: ' num2str(Jacobi(i))], 'Units', 'normalized','FontSize', 12, 'FontWeight', 'bold', 'Color', 'red');
     hold off
 
     frame = getframe(gcf);
