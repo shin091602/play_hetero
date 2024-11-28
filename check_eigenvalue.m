@@ -122,3 +122,41 @@ ylabel('$y$[km]');
 grid on
 legend([f1_p1, f1_p2], {'$L_2$', 'Earth'}, 'Location', 'northwest');
 hold off
+
+%% check the eigenvalue
+video = VideoWriter('video/lyapunov_eigenvalue_1.mp4', 'MPEG-4');
+video.FrameRate = 3;
+open(video);
+for i = 1:count_max/plot_interval
+    X0 = [x0_corrected(i,:),reshape(eye(6),1,[])];
+    tspan = [0,t0_corrected(i)];
+    [~,Y] = ode113(@(t,x) fun_stm_cr3bp(t,x,mu),tspan,X0,options_ODE);
+
+    monodromy = reshape(Y(end,7:end),6,6);
+    [V,D] = eig(monodromy);
+
+    theta = linspace(0, 2*pi, 1001)';
+    x_circle = cos(theta);
+    y_circle = sin(theta);
+
+    figure;
+    hold on
+    plot(x_circle,y_circle,'k');
+    plot(diag(D),'o','MarkerFaceColor','none','MarkerEdgeColor','b','MarkerSize',10);
+    axis equal
+    xlabel('real part');
+    ylabel('imaginary part');
+    grid on
+    xlim([-1.5 1.5]);
+    ylim([-1.5 1.5]);
+    text(0.1, 0.9, ['jacobi constant: ' num2str(Jacobi(i))], 'Units', 'normalized','FontSize', 20, 'FontWeight', 'bold', 'Color', 'red');
+    hold off
+
+    frame = getframe(gcf);
+    writeVideo(video, frame);
+
+    close(gcf);
+
+end
+
+close(video)
