@@ -29,7 +29,7 @@ set(gcf, 'InvertHardCopy', 'off');
 close
 
 current_pass = pwd;
-addpath("Functions/");
+addpath("Functions_base/");
 
 %% initial setting
 [mu, ~, ~, ~]      = parameter(2); % Earth-Moon
