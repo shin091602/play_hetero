@@ -11,4 +11,7 @@
 
 ## Script
 
-- check_eigenvalue.m: Lyapunov orbit の family を計算し，その Monodoromy matrix の固有値を計算
+- check_eigenvalue.m:
+  Lyapunov orbit の family を計算し，その Monodoromy matrix の固有値を計算する
+- fun_manifolds_custom.m:　
+  絶対値が１でない，２組の複素共役な固有値の固有ベクトルの方向に多様体を計算する

@@ -35,13 +35,57 @@ if (imag(val(index_s)) ~= 0) || (imag(val(index_u)) ~= 0)
 end
 
 % Stable and unstable eigenvectors
-vector_stable = vec(:,index_s);
-if vector_stable(1) < 0
-    vector_stable = - vector_stable;
+vector_stable_1 = vec(:,index_s_1);
+if vector_stable_1(1) < 0
+    vector_stable_1 = - vector_stable_1;
 end
-vector_unstable = vec(:,index_u);
-if vector_unstable(1) < 0
-    vector_unstable = - vector_unstable;
+vector_unstable_1 = vec(:,index_u_1);
+if vector_unstable_1(1) < 0
+    vector_unstable_1 = - vector_unstable_1;
+end
+vector_stable_2 = vec(:,index_s_2);
+if vector_stable_2(1) < 0
+    vector_stable_2 = - vector_stable_2;
+end
+vector_unstable_2 = vec(:,index_u_2);
+if vector_unstable_2(1) < 0
+    vector_unstable_2 = - vector_unstable_2;
+end
+% calculate manifolds
+XS_left = zeros(6, N);
+XS_right = zeros(6, N);
+XU_left = zeros(6, N);
+XU_right = zeros(6, N);
+
+% Apply perturbations to each of N points of a periodic orbit
+for iteration = 1:N
+    % Grab state transition matrix at the fixed point
+    Phi = reshape(Y(iteration, 7:42), 6, 6);
+
+    % Grab state at the fixed point
+    x_star = Y(iteration, 1:6)';
+
+    % Map stable and unstable vectors forward
+    S_1 = Phi*vector_stable_1;
+    S_1 = S_1/norm(S_1);
+    U_1 = Phi*vector_unstable_1;
+    U_1 = U_1/norm(U_1);
+    S_2 = Phi*vector_stable_2;
+    S_2 = S_2/norm(S_2);
+    U_2 = Phi*vector_unstable_2;
+    U_2 = U_2/norm(U_2);
+
+    % Create perturbation vector
+    % vpert = xpert*norm(x_star(4:6))/norm(x_star(1:3));
+    % pert = [ones(3,1).*xpert; ones(3,1).*vpert];
+    pert = ones(6,1).*xpert;
+
+    % Perturb conditions
+    XS_left(:,iteration)  = x_star - S_1.*pert;
+    XS_right(:,iteration) = x_star + S.*pert;
+
+    XU_left(:,iteration)  = x_star - U.*pert;
+    XU_right(:,iteration) = x_star + U.*pert;
 end
 
 
