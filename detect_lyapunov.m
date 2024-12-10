@@ -35,11 +35,6 @@ addpath("Functions_base/");
 [mu, ~, ~, ~]      = parameter(2); % Earth-Moon
 [L1, L2, L3, L4, L5] = librationPoints(mu);
 
-options_ODE   = odeset('RelTol', 3e-14, 'AbsTol', 1e-14);
-iteration_max = 100;
-threshold     = 1e-10;
-delta         = 2e-5;
-count         = 0;
 count_max     = 8000;
 plot_interval = 100;
 

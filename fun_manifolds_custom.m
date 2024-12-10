@@ -81,11 +81,11 @@ for iteration = 1:N
     pert = ones(6,1).*xpert;
 
     % Perturb conditions
-    XS_left(:,iteration)  = x_star - S_1.*pert;
-    XS_right(:,iteration) = x_star + S.*pert;
+    XS_left(:,iteration)  = x_star - S_2.*pert;
+    XS_right(:,iteration) = x_star + S_2.*pert;
 
-    XU_left(:,iteration)  = x_star - U.*pert;
-    XU_right(:,iteration) = x_star + U.*pert;
+    XU_left(:,iteration)  = x_star - U_2.*pert;
+    XU_right(:,iteration) = x_star + U_2.*pert;
 end
 
 
