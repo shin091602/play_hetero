@@ -136,3 +136,90 @@ t0_1=detect_period_orbit_1(2);
 
 tspan_1 = [0 2*t0_1];
 [t_1, x_1] = ode113(@(t, x) fun_cr3bp(t, x, mu), tspan_1, x0_1, options_ODE);
+
+%% 面外方向に多様体を伝播
+xpert = 1e-4;
+N = 100;
+
+[XS_left, XS_right, XU_left, XU_right, Y_2] = fun_manifolds_custom(mu, x0_1, 2*t0_1, N, xpert, options_ODE);
+tf = 15;
+tspan_s = [tf_2 0];
+tspan_u = [0 tf_2];
+% プロット
+
+figure();
+hold on
+
+for i = 1:N
+    [~,ys_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_left(:,i), options_ODE);
+    ys_left = flipud(ys_left);
+    f1_p1 = plot3(ys_left(:,1),ys_left(:,2),ys_left(:,3),'g');
+end
+for i = 1:N
+    [~,ys_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,i), options_ODE);
+    ys_right = flipud(ys_right);
+    f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
+end
+% for i = 1:N
+%     [~,yu_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_left(:,i), options_ODE);
+%     f1_p3 = plot3(yu_left(:,1),yu_left(:,2),yu_left(:,3),'m');
+% end
+% for i = 1:N
+%     [~,yu_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_right(:,i), options_ODE);
+%     f1_p4 = plot3(yu_right(:,1),yu_right(:,2),yu_right(:,3),'r');
+% end
+plot3(x_1(:,1), x_1(:,2),x_1(:,3),'k');
+plot3(L1(1),L1(2),L1(3),'*','MarkerFaceColor','k','MarkerEdgeColor','k','MarkerSize',10);
+
+view_angle = [40 30];
+
+view(gca,view_angle(1),view_angle(2));
+% xlim([0.96 1.02]);
+% ylim([-0.02 0.02]);
+xlabel('$x$[-]');
+ylabel('$y$[-]');
+zlabel('$z$[-]');
+grid on
+hold off
+
+%% 面外，面内両方の成分を持つ多様体をプロット
+[XS_left, XS_right, XU_left, XU_right, Y_2] = fun_manifolds_double(mu, x0_1, 2*t0_1, N, xpert, options_ODE);
+tf = 15;
+tspan_s = [tf_2 0];
+tspan_u = [0 tf_2];
+% プロット
+
+figure();
+hold on
+
+for i = 1:N
+    [~,ys_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_left(:,i), options_ODE);
+    ys_left = flipud(ys_left);
+    f1_p1 = plot3(ys_left(:,1),ys_left(:,2),ys_left(:,3),'g');
+end
+for i = 1:N
+    [~,ys_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,i), options_ODE);
+    ys_right = flipud(ys_right);
+    f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
+end
+% for i = 1:N
+%     [~,yu_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_left(:,i), options_ODE);
+%     f1_p3 = plot3(yu_left(:,1),yu_left(:,2),yu_left(:,3),'m');
+% end
+% for i = 1:N
+%     [~,yu_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_right(:,i), options_ODE);
+%     f1_p4 = plot3(yu_right(:,1),yu_right(:,2),yu_right(:,3),'r');
+% end
+plot3(x_1(:,1), x_1(:,2),x_1(:,3),'k');
+plot3(L1(1),L1(2),L1(3),'*','MarkerFaceColor','k','MarkerEdgeColor','k','MarkerSize',10);
+
+view_angle = [40 30];
+
+view(gca,view_angle(1),view_angle(2));
+xlim([0.7, 1.3]);
+ylim([-0.2 0.2]);
+xlabel('$x$[-]');
+ylabel('$y$[-]');
+zlabel('$z$[-]');
+grid on
+hold off

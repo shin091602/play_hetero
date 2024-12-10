@@ -1,5 +1,5 @@
 %% calculate initial conditions for stable and unstable manifolds of a periodic orbit which has two pair of eigenvalue which is not one.
-function [XS_left, XS_right, XU_left, XU_right, Y] = fun_manifolds_custom(mu, x0, t0, N, xpert, options)
+function [XS_left, XS_right, XU_left, XU_right, Y] = fun_manifolds_double(mu, x0, t0, N, xpert, options)
 % mu      : mass ratio of the primaries
 % x0      : initial state of a periodic orbit
 % t0      : the period of a periodic orbit
@@ -77,10 +77,10 @@ for iteration = 1:N
     pert = ones(6,1).*xpert;
 
     % Perturb conditions
-    XS_left(:,iteration)  = x_star - S_2.*pert;
-    XS_right(:,iteration) = x_star + S_2.*pert;
+    XS_left(:,iteration)  = x_star - S_1.*pert - S_2.*pert;
+    XS_right(:,iteration) = x_star + S_1.*pert + S_2.*pert;
 
-    XU_left(:,iteration)  = x_star - U_2.*pert;
-    XU_right(:,iteration) = x_star + U_2.*pert;
+    XU_left(:,iteration)  = x_star - U_1.*pert - U_2.*pert;
+    XU_right(:,iteration) = x_star + U_1.*pert + U_2.*pert;
 end
 end
