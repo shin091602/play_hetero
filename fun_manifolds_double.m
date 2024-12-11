@@ -48,10 +48,11 @@ if vector_unstable_2(1) < 0
     vector_unstable_2 = - vector_unstable_2;
 end
 % calculate manifolds
-XS_left = zeros(6, N);
-XS_right = zeros(6, N);
-XU_left = zeros(6, N);
-XU_right = zeros(6, N);
+XS_left = zeros(6, 50, N);
+XS_right = zeros(6, 50, N);
+XU_left = zeros(6, 50, N);
+XU_right = zeros(6, 50, N);
+theata = linspace(0, pi/2, 50);
 
 % Apply perturbations to each of N points of a periodic orbit
 for iteration = 1:N
@@ -76,11 +77,15 @@ for iteration = 1:N
     % pert = [ones(3,1).*xpert; ones(3,1).*vpert];
     pert = ones(6,1).*xpert;
 
-    % Perturb conditions
-    XS_left(:,iteration)  = x_star - S_1.*pert - S_2.*pert;
-    XS_right(:,iteration) = x_star + S_1.*pert + S_2.*pert;
+    for j = 1:length(theata)
+        % Perturb conditions
+        th_cos = ones(6,1).*cos(theata(j));
+        th_sin = ones(6,1).*sin(theata(j));
+        XS_left(:,j,iteration)  = x_star - S_1.*pert.*th_cos - S_2.*pert.*th_sin;
+        XS_right(:,j,iteration) = x_star + S_1.*pert.*th_cos + S_2.*pert.*th_sin;
 
-    XU_left(:,iteration)  = x_star - U_1.*pert - U_2.*pert;
-    XU_right(:,iteration) = x_star + U_1.*pert + U_2.*pert;
+        XU_left(:,j,iteration)  = x_star - U_1.*pert.*th_cos - U_2.*pert.*th_sin;
+        XU_right(:,j,iteration) = x_star + U_1.*pert.*th_cos + U_2.*pert.*th_sin;
+    end
 end
 end

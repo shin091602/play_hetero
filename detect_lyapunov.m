@@ -192,15 +192,19 @@ tspan_u = [0 tf_2];
 figure();
 hold on
 
+% for i = 1:N
+%     for j = 1:50
+%         [~,ys_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_left(:,j,i), options_ODE);
+%         ys_left = flipud(ys_left);
+%         f1_p1 = plot3(ys_left(:,1),ys_left(:,2),ys_left(:,3),'g');
+%     end
+% end
 for i = 1:N
-    [~,ys_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_left(:,i), options_ODE);
-    ys_left = flipud(ys_left);
-    f1_p1 = plot3(ys_left(:,1),ys_left(:,2),ys_left(:,3),'g');
-end
-for i = 1:N
-    [~,ys_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,i), options_ODE);
-    ys_right = flipud(ys_right);
-    f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
+    for j = 1:50
+        [~,ys_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,j,i), options_ODE);
+        ys_right = flipud(ys_right);
+        f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
+    end
 end
 % for i = 1:N
 %     [~,yu_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_left(:,i), options_ODE);
@@ -221,5 +225,62 @@ ylim([-0.2 0.2]);
 xlabel('$x$[-]');
 ylabel('$y$[-]');
 zlabel('$z$[-]');
+grid on
+hold off
+
+%% ポアンカレ断面をとる
+xes_right = zeros(6,50,N);
+figure();
+hold on
+% for i = 1:N
+%     for j = 1:50
+%         [~,ys_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_left(:,j,i), options_ODE);
+%         ys_left = flipud(ys_left);
+%         f1_p1 = plot3(ys_left(:,1),ys_left(:,2),ys_left(:,3),'g');
+%     end
+% end
+for i = 1:N
+    for j = 1:50
+        [~,ys_right,~,xe,~] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,j,i), options_ODE_1);
+        ys_right = flipud(ys_right);
+        if xe
+            xes_right(:,j,i) = xe;
+        end
+        f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
+    end
+end
+% for i = 1:N
+%     [~,yu_left] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_left(:,i), options_ODE);
+%     f1_p3 = plot3(yu_left(:,1),yu_left(:,2),yu_left(:,3),'m');
+% end
+% for i = 1:N
+%     [~,yu_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_u, XU_right(:,i), options_ODE);
+%     f1_p4 = plot3(yu_right(:,1),yu_right(:,2),yu_right(:,3),'r');
+% end
+plot3(x_1(:,1), x_1(:,2),x_1(:,3),'k');
+plot3(L1(1),L1(2),L1(3),'*','MarkerFaceColor','k','MarkerEdgeColor','k','MarkerSize',10);
+
+view_angle = [40 30];
+
+view(gca,view_angle(1),view_angle(2));
+xlim([0.7, 1.3]);
+ylim([-0.2 0.2]);
+xlabel('$x$[-]');
+ylabel('$y$[-]');
+zlabel('$z$[-]');
+grid on
+hold off
+%% 
+figure();
+hold on
+for i = 1:N
+    for j = 1:50
+        plot3(xes_right(2,j,i),xes_right(3,j,i),xes_right(4,j,i),'o')
+    end
+end
+xlabel('y');
+ylabel('z');
+zlabel('dx');
+zlim([-5,0])
 grid on
 hold off
