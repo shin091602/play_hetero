@@ -53,7 +53,7 @@ XS_left = zeros(6, number_division, N);
 XS_right = zeros(6, number_division, N);
 XU_left = zeros(6, number_division, N);
 XU_right = zeros(6, number_division, N);
-theata = linspace(0, pi, number_division);
+theata = linspace(0, 2*pi, number_division);
 
 % Apply perturbations to each of N points of a periodic orbit
 for iteration = 1:N
