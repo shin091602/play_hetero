@@ -143,8 +143,8 @@ N = 100;
 
 [XS_left, XS_right, XU_left, XU_right, Y_2] = fun_manifolds_custom(mu, x0_1, 2*t0_1, N, xpert, options_ODE);
 tf = 15;
-tspan_s = [tf_2 0];
-tspan_u = [0 tf_2];
+tspan_s = [tf 0];
+tspan_u = [0 tf];
 % プロット
 
 figure();
@@ -179,14 +179,15 @@ view(gca,view_angle(1),view_angle(2));
 xlabel('$x$[-]');
 ylabel('$y$[-]');
 zlabel('$z$[-]');
+title('面外方向多様体')
 grid on
 hold off
 
 %% 面外，面内両方の成分を持つ多様体をプロット
 [XS_left, XS_right, XU_left, XU_right, Y_2] = fun_manifolds_double(mu, x0_1, 2*t0_1, N, xpert, options_ODE);
 tf = 15;
-tspan_s = [tf_2 0];
-tspan_u = [0 tf_2];
+tspan_s = [tf 0];
+tspan_u = [0 tf];
 % プロット
 
 figure();
@@ -200,7 +201,7 @@ hold on
 %     end
 % end
 for i = 1:N
-    for j = 1:50
+    for j = 1:100
         [~,ys_right] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,j,i), options_ODE);
         ys_right = flipud(ys_right);
         f1_p2 = plot3(ys_right(:,1),ys_right(:,2),ys_right(:,3),'Color','#77AC30');
@@ -225,11 +226,12 @@ ylim([-0.2 0.2]);
 xlabel('$x$[-]');
 ylabel('$y$[-]');
 zlabel('$z$[-]');
+title('２方向多様体')
 grid on
 hold off
 
 %% ポアンカレ断面をとる
-xes_right = zeros(6,50,N);
+xes_right = zeros(6,100,N);
 figure();
 hold on
 % for i = 1:N
@@ -240,7 +242,7 @@ hold on
 %     end
 % end
 for i = 1:N
-    for j = 1:50
+    for j = 1:100
         [~,ys_right,~,xe,~] = ode113(@(t,x) fun_cr3bp(t,x,mu), tspan_s, XS_right(:,j,i), options_ODE_1);
         ys_right = flipud(ys_right);
         if xe
@@ -270,11 +272,11 @@ ylabel('$y$[-]');
 zlabel('$z$[-]');
 grid on
 hold off
-%% 
+
 figure();
 hold on
 for i = 1:N
-    for j = 1:50
+    for j = 1:100
         plot3(xes_right(2,j,i),xes_right(3,j,i),xes_right(4,j,i),'o')
     end
 end
