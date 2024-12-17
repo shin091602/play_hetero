@@ -247,7 +247,7 @@ for i=1:p("M") %designate the invariant circle
     pert = [ones(3,1).*p("xpert"); ones(3,1).*vpert];
 
     % Initial points of torus unstable manifolds　odeに投げる初期値
-    U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)) = X0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j))+pert.*del_w_us(:,j);
+    U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)) = X0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j))-pert.*del_w_us(:,j);
   end
 end
 
@@ -255,7 +255,9 @@ hinterm = figure();
 hold on
 grid on
 box on
-axis equal
+xlim([0.7, 1.3]);
+ylim([-0.2 0.2]);
+zlim([-0.06 0.06])
 view([7 25]);
 xlabel('$x$[-]');
 ylabel('$y$[-]');
@@ -286,7 +288,7 @@ hold on
 % 1th and 2nd points are representives
 for i=1:p("N")
   for j=1:p("M")
-    [~,X_sample] = ode113(@(t,x) fun_cr3bp(t,x,p("mu")),[0 p("snap_fin_time")+0.1],U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)));
+    [~,X_sample] = ode113(@(t,x) fun_cr3bp(t,x,p("mu")),[0 8],U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)));
     plot3(X_sample(:,1),X_sample(:,2),X_sample(:,3),"r","LineWidth",1.5);
     hold on
   end
