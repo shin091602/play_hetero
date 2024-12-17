@@ -68,7 +68,6 @@ close
 current_pass = pwd;
 addpath(strcat(current_pass, '/function_tori'));
 
-myTimer = tic;        %start time
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% INITIAL VALUES
@@ -234,12 +233,13 @@ hinvfin = plot_invariant_curve(zpo,fin_qpos_m,p,FR);
 del_w_us_inter_full = direction_manifold(fin_qpos_m,p,FR);
 
 % vector arrows
-U0 = zeros(p("d")*p("M"),1);
+U0 = zeros(p("d")*p("M")*p('N'),1);
 
 % invariant curve idx
 for i=1:p("M") %designate the invariant circle
-  k=p("d")*p("N")*(i-1)+1:p("d")*p("N")*i;
-  X0 = fin_qpos_m(k);
+  % k=p("d")*p("N")*(i-1)+1:p("d")*p("N")*i;
+  % X0 = fin_qpos_m(k);
+  X0 = fin_qpos_m;
   del_w_us = del_w_us_inter_full(:,:,i);
   for j=1:p("N")%designate torus point
     % Create perturbation vector
@@ -247,7 +247,7 @@ for i=1:p("M") %designate the invariant circle
     pert = [ones(3,1).*p("xpert"); ones(3,1).*vpert];
 
     % Initial points of torus unstable manifolds　odeに投げる初期値
-    U0(p("d")*i-5:p("d")*i) = X0(p("d")*j-5:p("d")*j)+pert.*del_w_us(:,j);
+    U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)) = X0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j))+pert.*del_w_us(:,j);
   end
 end
 
@@ -284,15 +284,12 @@ hold on
 
 % sample trajectories of torus manifolds
 % 1th and 2nd points are representives
-% for i=1:5:p("N")
-%   [~,X_sample] = ode113(@(t,x) fun_cr3bp(t,x,p("mu")),[0 p("snap_fin_time")+0.1],U0(p("d")*i-5:p("d")*i));
-%   plot3(X_sample(:,1),X_sample(:,2),X_sample(:,3),"r","LineWidth",1.5);
-%   hold on
-% end
 for i=1:p("N")
-  [~,X_sample] = ode113(@(t,x) fun_cr3bp(t,x,p("mu")),[0 p("snap_fin_time")+0.1],U0(p("d")*i-5:p("d")*i));
-  plot3(X_sample(:,1),X_sample(:,2),X_sample(:,3),"r","LineWidth",1.5);
-  hold on
+  for j=1:p("M")
+    [~,X_sample] = ode113(@(t,x) fun_cr3bp(t,x,p("mu")),[0 p("snap_fin_time")+0.1],U0(p("d")*((i-1)*p("M")+j)-5:p("d")*((i-1)*p("M")+j)));
+    plot3(X_sample(:,1),X_sample(:,2),X_sample(:,3),"r","LineWidth",1.5);
+    hold on
+  end
 end
 
 % interpolate function
@@ -303,18 +300,10 @@ end
 CO_un = zeros(p("num_iter"),p("num_iter"),3);
 CO_un(:,:,1) = 0.7010.*ones(p("num_iter")); % red
 
-% initialization of frame スナップショットをプロット
-% for sn=1:p("snap_span")
-%   surf(real(rim{1,sn}),real(rim{2,sn}),real(rim{3,sn}),CO_un);
-% end
-
 % for visualization
 shading interp
 lightangle(27,36)
 lightangle(27,36)
 hold off
 
-%% End of script
-time = strcat('calculation time: ', num2str(toc(myTimer)));
-disp(time);
 
