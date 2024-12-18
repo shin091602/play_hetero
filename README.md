@@ -9,9 +9,7 @@
 - updata: 機能修正
 - remove: 削除
 
-## Script
-
-### script
+## script
 
 - check_eigenvalue.m:
   Lyapunov orbit の family を計算し，その Monodoromy matrix の固有値を計算する
@@ -19,10 +17,18 @@
   ターゲットとなるヤコビ定数の Lyapunov orbit を計算し，多様体を計算する
 - tori_manifolds.m:
   トーラスの多様体を計算する
+- hetero_tori_lyapunov.m:
+  二次元トーラスとリアプノフ軌道の多様体をそれぞれ伝播させ，接続を調べる
 
-### function
+## function
 
 - fun_manifolds_custom.m:　
   絶対値が１でない，面外方向の固有ベクトルの方向に多様体を計算する
 - fun_manifolds_double.m:
   絶対値が１でない，２組の複素共役な固有値の固有ベクトルの方向に多様体を計算する
+
+## Detail of Script
+
+### hetero_tori_lyapunov.m
+
+- まず，トーラスを計算し，そのヤコビ定数を調べる．その後同じヤコビ定数を持つリアプノフ軌道を計算し多様体を伝播させる
