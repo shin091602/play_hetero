@@ -36,8 +36,8 @@ disp("corrected")
 [DFv,~] = DF_qpoms(ps{1,2},ps{2,2},p,FR);
 % null_accracyを調整
 svd_check = min(svd(DFv));
-if p('null_acr') > svd_check * 2
-    p('null_acr') = svd_check * 2;
+if p('null_acr') > svd_check * 1.1
+    p('null_acr') = svd_check * 1.1;
 end
 % nullspace
 ps{5,2} = null(DFv,p("null_acr"));

@@ -334,7 +334,7 @@ end
 xlabel('y');
 ylabel('z');
 zlabel('dx');
-zlim([-1,0]);
+% zlim([-1,0]);
 grid on
 hold off
 
